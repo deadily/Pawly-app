@@ -196,3 +196,177 @@ header {
     }   
 
 }
+
+/* --- Стили для Модальных Окон --- */
+
+/* Затемняющий фон (40% opacity) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 40% черного */
+    z-index: 1000;
+    backdrop-filter: blur(2px); /* Легкое размытие фона для красоты */
+}
+
+/* Контейнер окна */
+.modal-window {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 505px; /* Твой размер с макета */
+    min-height: 530px; /* Для логина */
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 1001;
+    flex-direction: column;
+    padding: 40px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -48%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Заголовок */
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+/* Поля ввода (стилизованные под макет) */
+.styled-input {
+    width: 100%;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    background-color: #E3F2FD; /* Светло-голубой фон как на макете */
+    border: none;
+    border-radius: 12px;
+    font-family: 'Philosopher', sans-serif;
+    font-size: 18px;
+    color: #333;
+    outline: none;
+    transition: box-shadow 0.2s;
+}
+
+.styled-input::placeholder {
+    color: #90A4AE;
+}
+
+.styled-input:focus {
+    box-shadow: 0 0 0 2px #BBDEFB;
+}
+
+/* Кнопка "Продолжить" */
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    background-color: #BBDEFB; /* Голубой цвет кнопки */
+    border: none;
+    border-radius: 12px;
+    font-family: 'Philosopher', sans-serif;
+    font-size: 20px;
+    color: #000;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #90CAF9;
+}
+
+/* Ссылки внизу формы */
+.modal-footer-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.modal-footer-link a {
+    color: #90A4AE;
+    text-decoration: underline;
+}
+
+/* Кнопка "Назад" (стрелка внизу слева) */
+.btn-back {
+    position: absolute;
+    bottom: -50px; /* Выносим за пределы белого окна */
+    left: 0;
+    background: none;
+    border: none;
+    font-family: 'Philosopher', sans-serif;
+    font-size: 18px;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-back .arrow {
+    font-size: 24px;
+}
+
+/* Кастомные чекбоксы (зеленая галочка) */
+.checkbox-group {
+    margin-bottom: 20px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.custom-checkbox input {
+    display: none; /* Прячем стандартный чекбокс */
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: #4CAF50; /* Зеленый цвет */
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Рисуем галочку */
+.custom-checkbox input:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 550px) {
+    .modal-window {
+        width: 90%;
+        padding: 20px;
+    }
+}

@@ -2,31 +2,57 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Article;
+use App\Models\Pet;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Pet> $pets
+ * @method \Illuminate\Database\Eloquent\Relations\BelongsToMany pets()
+ */
+
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $primaryKey = 'userID';
+
+    protected $fillable = [
+        'name', 
+        'email', 
+        'password_hash', 
+        'role_id'
+    ];
+
+    protected $hidden = [
+        'password_hash',
+    ];
+
+    public function getAuthPassword()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->password_hash;
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'user_id');
+    }
+
+    public function pets()
+    {
+        return $this->belongsToMany(
+            Pet::class,       // Связанная модель
+            'user_pets',      // Промежуточная таблица
+            'user_id',        // Внешний ключ в промежуточной таблице,指向 текущую модель (User)
+            'pet_id',         // Внешний ключ в промежуточной таблице,指向 связанную модель (Pet)
+            'userID',         // !!! ЛОКАЛЬНЫЙ КЛЮЧ В ТАБЛИЦЕ users (вместо дефолтного 'id')
+            'petID'           // !!! РОДСТВЕННЫЙ КЛЮЧ В ТАБЛИЦЕ pets (вместо дефолтного 'id')
+        )->withTimestamps();
     }
 }
